@@ -59,8 +59,8 @@ public class ModuleIOSparkMAX implements ModuleIO {
       driver.setInverted(true);
     }
 
-    driver.setIdleMode(IdleMode.kBrake);
-    azimuth.setIdleMode(IdleMode.kBrake);
+    driver.setIdleMode(IdleMode.kCoast);
+    azimuth.setIdleMode(IdleMode.kCoast);
 
     getDriveEncoder().setPositionConversionFactor(Constants.DriveConstants.DRIVE_DIST_PER_PULSE);
 

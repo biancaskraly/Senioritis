@@ -98,10 +98,13 @@ public class Module extends SubsystemBase {
     state =
         SwerveModuleState.optimize(
             desiredState, Rotation2d.fromDegrees(inputs.aziEncoderPositionDeg));
-
+    // state = desiredState;
     NtHelper.setDouble(
-        "/AdvantageKit/Swerve/" + getName() + "/desiredAziAbsoluteEncoderAngle",
+        "/AdvantageKit/Swerve/" + information.getName() + "/desiredAziAbsoluteEncoderAngle",
         state.angle.getDegrees());
+    NtHelper.setDouble(
+        "/AdvantageKit/Swerve/" + information.getName() + "/desiredSpeed",
+        state.speedMetersPerSecond);
   }
 
   /**
@@ -132,7 +135,12 @@ public class Module extends SubsystemBase {
     recordOutput("Desired Drive Volts", driveOutput);
     recordOutput("Desired Azi Volts", turnOutput);
 
-    io.setDriveVoltage(driveOutput);
+    if (state.speedMetersPerSecond == 0.0) {
+      io.setDriveVoltage(0);
+    } else {
+      io.setDriveVoltage(driveOutput);
+    }
+
     io.setAzimuthVoltage(turnOutput);
   }
 

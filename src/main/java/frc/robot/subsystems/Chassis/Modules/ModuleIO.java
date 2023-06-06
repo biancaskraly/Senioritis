@@ -19,6 +19,9 @@ public interface ModuleIO {
     public double driveOutputVolts = 0.0;
     public double driveCurrentDrawAmps = 0.0;
     public double driveTempCelcius = 0.0;
+
+    // added for tuning pid controllers
+    public double targetAziAbsoluteEncoderDegrees = 0;
   }
 
   /**
