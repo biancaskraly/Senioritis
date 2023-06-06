@@ -5,6 +5,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utilities.ModuleInfo;
+import frc.robot.utilities.NtHelper;
 import frc.robot.utilities.PIDFFController;
 import org.littletonrobotics.junction.Logger;
 
@@ -96,7 +97,11 @@ public class Module extends SubsystemBase {
   public void setDesiredState(SwerveModuleState desiredState) {
     state =
         SwerveModuleState.optimize(
-            desiredState, Rotation2d.fromDegrees(inputs.aziAbsoluteEncoderDegrees));
+            desiredState, Rotation2d.fromDegrees(inputs.aziEncoderPositionDeg));
+
+    NtHelper.setDouble(
+        "/AdvantageKit/Swerve/" + getName() + "/desiredAziAbsoluteEncoderAngle",
+        state.angle.getDegrees());
   }
 
   /**

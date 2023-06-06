@@ -1,0 +1,57 @@
+{
+  "NetworkTables": {
+    "transitory": {
+      "AdvantageKit": {
+        "RealOutputs": {
+          "LoggedRobot": {
+            "open": true
+          },
+          "Logger": {
+            "open": true
+          },
+          "Pivot": {
+            "open": true
+          },
+          "open": true
+        },
+        "Swerve": {
+          "BackLeft": {
+            "open": true
+          },
+          "BackRight": {
+            "open": true
+          },
+          "open": true
+        },
+        "SystemStats": {
+          "CANBus": {
+            "open": true
+          }
+        },
+        "open": true
+      },
+      "LiveWindow": {
+        "open": true
+      },
+      "Shuffleboard": {
+        "open": true
+      },
+      "SmartDashboard": {
+        "TunableNumbers": {
+          "PivotController": {
+            "open": true
+          },
+          "open": true
+        }
+      }
+    },
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Autonomous Routine": "String Chooser"
+    }
+  },
+  "NetworkTables Settings": {
+    "mode": "Client (NT4)",
+    "serverTeam": "777"
+  }
+}
