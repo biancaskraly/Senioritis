@@ -13,7 +13,9 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Arm.ArmIOSparkMAX;
 import frc.robot.subsystems.Arm.ArmSubsystem;
+import frc.robot.subsystems.Chassis.ChassisIOMXP;
 import frc.robot.subsystems.Chassis.ChassisSubsystem;
+import frc.robot.subsystems.Chassis.Modules.ModuleIOSparkMAX;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
 import frc.robot.subsystems.Pivot.PivotIOFalcon;
 import frc.robot.subsystems.Pivot.PivotSubsystem;
@@ -81,13 +83,13 @@ public class Robot extends LoggedRobot {
   }
 
   private void initializeSubsystems() {
-    // swerveDrive =
-    //     new ChassisSubsystem(
-    //         new ChassisIOMXP(),
-    //         new ModuleIOSparkMAX(Constants.DriveConstants.FRONT_LEFT),
-    //         new ModuleIOSparkMAX(Constants.DriveConstants.FRONT_RIGHT),
-    //         new ModuleIOSparkMAX(Constants.DriveConstants.BACK_LEFT),
-    //         new ModuleIOSparkMAX(Constants.DriveConstants.BACK_RIGHT));
+    swerveDrive =
+        new ChassisSubsystem(
+            new ChassisIOMXP(),
+            new ModuleIOSparkMAX(Constants.DriveConstants.FRONT_LEFT),
+            new ModuleIOSparkMAX(Constants.DriveConstants.FRONT_RIGHT),
+            new ModuleIOSparkMAX(Constants.DriveConstants.BACK_LEFT),
+            new ModuleIOSparkMAX(Constants.DriveConstants.BACK_RIGHT));
 
     arm = new ArmSubsystem(new ArmIOSparkMAX());
     pivot = new PivotSubsystem(new PivotIOFalcon());
