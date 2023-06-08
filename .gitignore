@@ -173,3 +173,4 @@ out/
 # Simulation GUI and other tools window save file
 *-window.json
 src/main/java/frc/robot/GVersion.java
+.Glass/glass.json
