@@ -21,8 +21,8 @@ public class PivotIOFalcon implements PivotIO {
     pivotMotorLeft.follow(pivotMotorRight);
     pivotMotorLeft.setInverted(false);
 
-    pivotMotorRight.setNeutralMode(NeutralMode.Coast);
-    pivotMotorLeft.setNeutralMode(NeutralMode.Coast);
+    pivotMotorRight.setNeutralMode(NeutralMode.Brake);
+    pivotMotorLeft.setNeutralMode(NeutralMode.Brake);
 
     pivotMotorRight.configSupplyCurrentLimit(PivotConstants.CURRENT_LIMIT);
     pivotMotorLeft.configSupplyCurrentLimit(PivotConstants.CURRENT_LIMIT);
@@ -33,7 +33,8 @@ public class PivotIOFalcon implements PivotIO {
 
   @Override
   public void updateInputs(PivotInputs inputs) {
-    inputs.absoluteEncoderAngle = absoluteEncoder.getAbsolutePosition() * -360 + 109;
+    inputs.absoluteEncoderAngle =
+        (absoluteEncoder.getAbsolutePosition() * -360 + PivotConstants.ENCODER_OFFSET + 360) % 360;
     inputs.motorEncoderAngle =
         pivotMotorRight.getSelectedSensorPosition(0)
             * (360.0 / 2048.0)

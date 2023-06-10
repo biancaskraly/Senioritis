@@ -80,10 +80,10 @@ public class ModuleIOSparkMAX implements ModuleIO {
   public double simplifyDegrees(double degrees) {
     double result = degrees;
 
-    while (result > 360) {
+    while (result > 180) {
       result -= 360;
     }
-    while (result <= 0) {
+    while (result <= -180) {
       result += 360;
     }
     return result;

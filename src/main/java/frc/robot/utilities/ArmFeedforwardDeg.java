@@ -1,25 +1,23 @@
 package frc.robot.utilities;
 
-import edu.wpi.first.math.controller.ArmFeedforward;
-
-public class ArmFeedforwardDeg extends ArmFeedforward {
+public class ArmFeedforwardDeg {
 
   private static final double DEG2RADD = Math.PI / 180.0;
 
+  public final double ks;
+  public final double kg;
+  public final double kv;
+
   public ArmFeedforwardDeg(double ks, double kg, double kv) {
-    super(ks, kg, kv);
+    this.ks = ks;
+    this.kg = kg;
+    this.kv = kv;
   }
 
-  public ArmFeedforwardDeg(double ks, double kg, double kv, double ka) {
-    super(ks, kg, kv, ka);
-  }
-
-  @Override
   public double calculate(
-      double positionDegrees, double velocityDegreesPerSec, double accelDegreesPerSecSquared) {
-    return ks * Math.signum(velocityDegreesPerSec * DEG2RADD)
+      double positionDegrees, double positionError, double velocityDegreesPerSec) {
+    return ks * Math.signum(velocityDegreesPerSec)
         + kg * Math.cos(positionDegrees * DEG2RADD)
-        + kv * velocityDegreesPerSec * DEG2RADD
-        + ka * accelDegreesPerSecSquared * DEG2RADD;
+        + kv * velocityDegreesPerSec;
   }
 }

@@ -233,6 +233,9 @@ public class ChassisSubsystem extends SubsystemBase {
       case TRAJECTORY:
         setModuleStates(MotionHandler.driveTrajectory());
         break;
+      case TRAJECTORY_DUMB:
+        setModuleStates(MotionHandler.driveTrajectoryDumb());
+        break;
       default:
         break;
     }

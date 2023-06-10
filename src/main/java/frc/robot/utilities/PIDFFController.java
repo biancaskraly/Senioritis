@@ -4,6 +4,7 @@ import edu.wpi.first.math.controller.PIDController;
 
 public class PIDFFController extends PIDController {
   private AbstractFeedForward feedforward;
+  private double lastMeasurement;
 
   public PIDFFController(PIDFFGains gains) {
     super(gains.kP.get(), gains.kI.get(), gains.kD.get());
@@ -20,6 +21,13 @@ public class PIDFFController extends PIDController {
 
   @Override
   public double calculate(double measurement) {
-    return super.calculate(measurement) + feedforward.calculate(measurement, getVelocityError());
+    // Assumes 50 Hz cycle time and that this is called regularly
+    double velocity = (measurement - lastMeasurement) / 0.02;
+    double value = super.calculate(measurement);
+    if (feedforward != null) {
+      value += feedforward.calculate(measurement, getPositionError(), velocity);
+    }
+    lastMeasurement = measurement;
+    return value;
   }
 }

@@ -53,6 +53,10 @@ public final class Constants {
     // Absolute Encoders
     public static final int PIVOT_ENCODER = 1;
     public static final int ARM_ENCODER = 0;
+
+    // LED stuff (very important)
+    public static final int LED_PORT = 8;
+    public static final int LED_COUNT = 20;
   }
 
   @UtilityClass
@@ -61,16 +65,22 @@ public final class Constants {
     public static final int CURRENT_LIMIT = 30;
     public static final double MAX_HEIGHT = 32;
     public static final double MIN_HEIGHT = 1;
-    public static final double ENCODER_OFFSET = 280;
-    public static final double DIST_PER_ROTATION = 10.5;
-    public static final double RETRACTED_POSITION = 0;
-    public static final double EPSILON = 1;
+    public static final double ENCODER_OFFSET = 0;
+    public static final double DIST_PER_ROTATION = -10.5;
+    public static final double RETRACTED_POSITION = 5;
+    public static final double EPSILON = 5;
+
+    public static final double MAX_PID_OUTPUT_VOLTS = 8;
+    public static final double MAX_OUTPUT_VOLTS = 12;
 
     public static final PIDFFGains GAINS =
         PIDFFGains.builder("ArmController")
-            .kP(DOUBLE_PLACEHOLDER)
-            .kD(DOUBLE_PLACEHOLDER)
-            .kG(DOUBLE_PLACEHOLDER)
+            .kP(3)
+            .kD(0.00)
+            .kI(0.00)
+            .kS(1.00)
+            .kG(4.00)
+            .tolerance(0.5)
             .build();
   }
 
@@ -80,27 +90,28 @@ public final class Constants {
     public static final SupplyCurrentLimitConfiguration CURRENT_LIMIT =
         new SupplyCurrentLimitConfiguration(true, 20, 50, .25);
     public static final double MAX_ANGLE = 90;
-    public static final double MIN_ANGLE = DOUBLE_PLACEHOLDER;
+    public static final double MIN_ANGLE = 10;
     public static final double ENCODER_OFFSET = 109;
-    public static final double EPSILON = 1;
+    public static final double EPSILON = 5;
 
-    public static final double MAX_OUTPUT_VOLTS = 12;
+    public static final double MAX_OUTPUT_VOLTS = 4;
 
     public static final PIDFFGains GAINS =
         PIDFFGains.builder("PivotController")
-        .kP(0.1)
-        .kD(0)
-        .kG(1)
-        .kS(0.2)
-        .armDegFF()
-        .build();
+            .kP(0.15)
+            .kD(0.01)
+            .kG(0.20)
+            .kS(0.67)
+            .armDegFF()
+            .tolerance(0.5)
+            .build();
   }
 
   @UtilityClass
   public static class IntakeConstants {
-    public static final double IDLE_VOLTAGE = 1;
-    public static final double INTAKE_VOLTAGE = 6;
-    public static final double OUTTAKE_VOLTAGE = -4.8;
+    public static final double IDLE_VOLTAGE = 0;
+    public static final double INTAKE_VOLTAGE = 5;
+    public static final double OUTTAKE_VOLTAGE = -5;
   }
 
   @UtilityClass
@@ -112,10 +123,10 @@ public final class Constants {
     public static final double DRIVE_DIST_PER_PULSE =
         (1.0 / DRIVE_GEAR_RATIO) * Units.inchesToMeters(WHEEL_DIAMETER) * Math.PI;
     public static final double AZI_DIST_PER_PULSE = (1.0 / AZI_GEAR_RATIO) * 360;
-    public static final double MAX_SWERVE_VEL = Units.feetToMeters(16.0);
+    public static final double MAX_SWERVE_VEL = Units.feetToMeters(100);
     public static final double MAX_SWERVE_AZI = Math.PI;
     public static final double MAX_SWERVE_ACCEL = Units.feetToMeters(5);
-    public static final double MAX_ROTATIONAL_SPEED_RAD_PER_SEC = Units.degreesToRadians(275);
+    public static final double MAX_ROTATIONAL_SPEED_RAD_PER_SEC = 1;
 
     public static final int DRIVE_CURRENT_LIMIT = 50;
     public static final int AZI_CURRENT_LIMIT = 20;
@@ -167,7 +178,7 @@ public final class Constants {
             .driveCANId(7)
             .aziCANId(8)
             .CANCoder(30)
-            .offset(-259.18)
+            .offset(-259.5)
             .location(FRONT_LEFT_LOCATION)
             .build();
 
@@ -179,7 +190,7 @@ public final class Constants {
             .driveCANId(1)
             .aziCANId(2)
             .CANCoder(31)
-            .offset(-278.26)
+            .offset(-273.0)
             .location(FRONT_RIGHT_LOCATION)
             .build();
 
@@ -191,7 +202,7 @@ public final class Constants {
             .driveCANId(6)
             .aziCANId(5)
             .CANCoder(28)
-            .offset(-213.39)
+            .offset(-217.7)
             .location(BACK_LEFT_LOCATION)
             .build();
 
@@ -203,26 +214,17 @@ public final class Constants {
             .driveCANId(3)
             .aziCANId(4)
             .CANCoder(29)
-            .offset(-323.17)
+            .offset(-322.3)
             .location(BACK_RIGHT_LOCATION)
             .build();
 
     @UtilityClass
     public static final class Gains {
       public static final PIDFFGains K_DEFAULT_AZIMUTH_GAINS =
-          PIDFFGains.builder("BackRight/Default Azimuth")
-            .kP(0.06)
-            .tolerance(0.75)
-            .build();
+          PIDFFGains.builder("BackRight/Default Azimuth").kP(0.06).tolerance(0.75).build();
 
       public static final PIDFFGains K_DEFAULT_DRIVING_GAINS =
-          PIDFFGains.builder("BackRight/Default Driving")
-            .kP(1.0)
-            .kS(0.15)
-            .kD(0.05)
-            .kV(0)
-            .tolerance(2)
-            .build();
+          PIDFFGains.builder("BackRight/Default Driving").kP(1.0).kS(0.15).kD(0.05).kV(0).build();
 
       public static final PIDFFGains K_TRAJECTORY_CONTROLLER_GAINS_X =
           PIDFFGains.builder("Trajectory Controller X-Axis").kP(7).kD(0.0).build();
@@ -242,11 +244,25 @@ public final class Constants {
 
   @UtilityClass
   public static class Superstructures {
-    public static final SuperstructureConfig GROUND_INTAKE =
-        SuperstructureConfig.builder().pivotPosition(0).armHeight(0).build();
+    // Handles ground intake and hybrid nodes
+    public static final SuperstructureConfig GROUND =
+        SuperstructureConfig.builder().pivotPosition(10).armHeight(5).build();
     public static final SuperstructureConfig HOME_POSITION =
-        SuperstructureConfig.builder().pivotPosition(90).armHeight(0).build();
-    public static final SuperstructureConfig ARM_TEST =
-        SuperstructureConfig.builder().pivotPosition(45).armHeight(20).build();
+        SuperstructureConfig.builder().pivotPosition(90).armHeight(5).build();
+    public static final SuperstructureConfig SINGLE_SUBSTATION =
+        SuperstructureConfig.builder().pivotPosition(40).armHeight(5).build();
+    // Untested
+    public static final SuperstructureConfig DOUBLE_SUBSTATION =
+        SuperstructureConfig.builder().pivotPosition(40).armHeight(5).build();
+
+    public static final SuperstructureConfig CUBE_MID =
+        SuperstructureConfig.builder().pivotPosition(45).armHeight(5).build();
+    public static final SuperstructureConfig CUBE_HIGH =
+        SuperstructureConfig.builder().pivotPosition(50).armHeight(25).build();
+    public static final SuperstructureConfig CONE_MID =
+        SuperstructureConfig.builder().pivotPosition(50).armHeight(10).build();
+    // Untested
+    public static final SuperstructureConfig CONE_HIGH =
+        SuperstructureConfig.builder().pivotPosition(55).armHeight(30).build();
   }
 }

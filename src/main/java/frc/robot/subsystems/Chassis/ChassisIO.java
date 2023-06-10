@@ -7,7 +7,7 @@ public interface ChassisIO {
 
   @AutoLog
   public static class ChassisInputs {
-    public double gyroYawPosition = 0.0;
+    public double gyroYawPosition = 10.0;
     public double gyroPitchPosition = 0.0;
     public double previousgyroPitchPosition = 0.0;
     public double gyroRollPosition = 0.0;

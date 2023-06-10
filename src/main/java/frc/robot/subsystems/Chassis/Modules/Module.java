@@ -36,7 +36,7 @@ public class Module extends SubsystemBase {
     io.updateInputs(inputs);
 
     state = new SwerveModuleState(0, Rotation2d.fromDegrees(inputs.aziEncoderPositionDeg));
-    azimuthController.enableContinuousInput(0, 360);
+    azimuthController.enableContinuousInput(-180, 180);
   }
 
   /**
@@ -97,7 +97,7 @@ public class Module extends SubsystemBase {
   public void setDesiredState(SwerveModuleState desiredState) {
     state =
         SwerveModuleState.optimize(
-            desiredState, Rotation2d.fromDegrees(inputs.aziEncoderPositionDeg));
+            desiredState, Rotation2d.fromDegrees(inputs.aziAbsoluteEncoderDegrees));
     // state = desiredState;
     NtHelper.setDouble(
         "/AdvantageKit/Swerve/" + information.getName() + "/desiredAziAbsoluteEncoderAngle",

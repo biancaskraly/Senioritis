@@ -19,7 +19,7 @@ public class HeadingController {
   private HeadingController() {
     controller = new PIDFFController(DriveConstants.K_HEADING_CONTROLLER_GAINS);
     controller.setTolerance(DriveConstants.K_HEADING_CONTROLLER_GAINS.tolerance.get());
-    controller.enableContinuousInput(0, 360);
+    controller.enableContinuousInput(-180, 180);
     setpoint = Robot.swerveDrive.getPose().getRotation();
   }
 
